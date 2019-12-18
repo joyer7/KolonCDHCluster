@@ -22,7 +22,11 @@ npm install forever -g
 
 # Check input parameters
 case "$1" in
-        aws)
+        local)
+            echo "server 169.254.169.123 prefer iburst minpoll 4 maxpoll 4" >> /etc/chrony.conf
+            systemctl restart chronyd
+            ;;
+		aws)
             echo "server 169.254.169.123 prefer iburst minpoll 4 maxpoll 4" >> /etc/chrony.conf
             systemctl restart chronyd
             ;;
@@ -88,10 +92,10 @@ cp ~/mysql-connector-java-5.1.46/mysql-connector-java-5.1.46-bin.jar /usr/share/
 rm -rf ~/mysql-connector-java-5.1.46*
 
 echo "-- Create DBs required by CM"
-mysql -u root < ~/OneNodeCDHCluster/scripts/create_db.sql
+mysql -u root < ~/KolonCDHCluster/scripts/create_db.sql
 
 echo "-- Secure MariaDB"
-mysql -u root < ~/OneNodeCDHCluster/scripts/secure_mariadb.sql
+mysql -u root < ~/KolonCDHCluster/scripts/secure_mariadb.sql
 
 echo "-- Prepare CM database 'scm'"
 /opt/cloudera/cm/schema/scm_prepare_database.sh mysql scm scm cloudera
@@ -130,9 +134,9 @@ chown -R root:root /opt/cloudera/cem/efm-1.0.0.1.0.0.0-54
 chown -R root:root /opt/cloudera/cem/minifi-0.6.0.1.0.0.0-54
 chown -R root:root /opt/cloudera/cem/minifi-toolkit-0.6.0.1.0.0.0-54
 rm -f /opt/cloudera/cem/efm/conf/efm.properties
-cp ~/OneNodeCDHCluster/conf/efm.properties /opt/cloudera/cem/efm/conf
+cp ~/KolonCDHCluster/conf/efm.properties /opt/cloudera/cem/efm/conf
 rm -f /opt/cloudera/cem/minifi/conf/bootstrap.conf
-cp ~/OneNodeCDHCluster/conf/bootstrap.conf /opt/cloudera/cem/minifi/conf
+cp ~/KolonCDHCluster/conf/bootstrap.conf /opt/cloudera/cem/minifi/conf
 sed -i "s/YourHostname/`hostname -f`/g" /opt/cloudera/cem/efm/conf/efm.properties
 sed -i "s/YourHostname/`hostname -f`/g" /opt/cloudera/cem/minifi/conf/bootstrap.conf
 /opt/cloudera/cem/minifi/bin/minifi.sh install
@@ -144,7 +148,7 @@ mkdir ~/.ssh
 cat ~/myRSAkey.pub >> ~/.ssh/authorized_keys
 chmod 400 ~/.ssh/authorized_keys
 ssh-keyscan -H `hostname` >> ~/.ssh/known_hosts
-sed -i 's/.*PermitRootLogin.*/PermitRootLogin without-password/' /etc/ssh/sshd_config
+#sed -i 's/.*PermitRootLogin.*/PermitRootLogin without-password/' /etc/ssh/sshd_config
 systemctl restart sshd
 
 echo "-- Start CM, it takes about 2 minutes to be ready"
@@ -163,14 +167,14 @@ yum install -y python-pip
 pip install --upgrade pip
 pip install cm_client
 
-sed -i "s/YourHostname/`hostname -f`/g" ~/OneNodeCDHCluster/$TEMPLATE
-sed -i "s/YourCDSWDomain/cdsw.$PUBLIC_IP.nip.io/g" ~/OneNodeCDHCluster/$TEMPLATE
-sed -i "s/YourPrivateIP/`hostname -I | tr -d '[:space:]'`/g" ~/OneNodeCDHCluster/$TEMPLATE
-sed -i "s#YourDockerDevice#$DOCKERDEVICE#g" ~/OneNodeCDHCluster/$TEMPLATE
+sed -i "s/YourHostname/`hostname -f`/g" ~/KolonCDHCluster/$TEMPLATE
+sed -i "s/YourCDSWDomain/cdsw.$PUBLIC_IP.nip.io/g" ~/KolonCDHCluster/$TEMPLATE
+sed -i "s/YourPrivateIP/`hostname -I | tr -d '[:space:]'`/g" ~/KolonCDHCluster/$TEMPLATE
+sed -i "s#YourDockerDevice#$DOCKERDEVICE#g" ~/KolonCDHCluster/$TEMPLATE
 
-sed -i "s/YourHostname/`hostname -f`/g" ~/OneNodeCDHCluster/scripts/create_cluster.py
+sed -i "s/YourHostname/`hostname -f`/g" ~/KolonCDHCluster/scripts/create_cluster.py
 
-python ~/OneNodeCDHCluster/scripts/create_cluster.py $TEMPLATE
+python ~/KolonCDHCluster/scripts/create_cluster.py $TEMPLATE
 
 # configure and start EFM and Minifi
 service efm start
