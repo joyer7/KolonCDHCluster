@@ -79,6 +79,12 @@ The script `setup.sh` takes 3 arguments:
 - the template file.
 - OPTIONAL the Docker Device disk mount point.
 
+
+Example: create cluster without CDSW on Local Server using default_template.json
+```
+$ ./setup.sh local templates/default_template.json
+```
+
 Example: create cluster without CDSW on AWS using default_template.json
 ```
 $ ./setup.sh aws templates/default_template.json
