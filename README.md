@@ -82,7 +82,7 @@ The script `setup.sh` takes 3 arguments:
 
 Example: create cluster without CDSW on Local Server using default_template.json
 ```
-$ ./setup.sh local templates/default_template.json
+$ ./setup.sh legacy templates/default_template.json
 ```
 
 Example: create cluster without CDSW on AWS using default_template.json

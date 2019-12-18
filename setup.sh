@@ -22,7 +22,7 @@ npm install forever -g
 
 # Check input parameters
 case "$1" in
-        local)
+        legacy)
             echo "server 169.254.169.123 prefer iburst minpoll 4 maxpoll 4" >> /etc/chrony.conf
             systemctl restart chronyd
             ;;
