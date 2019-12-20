@@ -49,6 +49,8 @@ yum install -y epel-release
 yum install -y python-pip
 pip install --upgrade pip
 
+# Timedate setting
+timedatectl set-timezone asia/seoul
 
 
 
