@@ -84,8 +84,11 @@ echo "-- Now CM is started and the next step is to automate using the CM API"
 
 # Cloudera Manager Install
 pip install cm_client
+sed -i "s/YourHostname/`hostname -f`/g" ~/KolonCDHCluster/$TEMPLATE
+sed -i "s/YourCDSWDomain/cdsw.$PUBLIC_IP.nip.io/g" ~/KolonCDHCluster/$TEMPLATE
+sed -i "s/YourPrivateIP/`hostname -I | tr -d '[:space:]'`/g" ~/KolonCDHCluster/$TEMPLATE
+sed -i "s#YourDockerDevice#$DOCKERDEVICE#g" ~/KolonCDHCluster/$TEMPLATE
 sed -i "s/YourHostname/`hostname -f`/g" ~/KolonCDHCluster/scripts/create_cluster.py
-
 
 # Create Cluster
 python ~/KolonCDHCluster/scripts/create_cluster.py $TEMPLATE
