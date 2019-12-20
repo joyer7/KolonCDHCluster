@@ -9,7 +9,7 @@ echo  "vm.swappiness = 1" >> /etc/sysctl.conf
 sysctl vm.swappiness=1
 timedatectl set-timezone UTC
 # CDSW requires Centos 7.5, so we trick it to believe it is...
-echo "CentOS Linux release 7.5.1810 (Core)" > /etc/redhat-release
+echo "CentOS Linux release 7.6.0 (Core)" > /etc/redhat-release
 
 echo "-- Install Java OpenJDK8 and other tools"
 yum install -y java-1.8.0-openjdk-devel vim wget curl git bind-utils
