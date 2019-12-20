@@ -116,6 +116,29 @@ You can also check the CDSW deployment status on CM > CDSW service > Instances >
 
 To find out what the docker device mount point is, use `lsblk`. See below examples:
 
+RHEL(7.7) Standard
+```
+$ lsblk
+NAME   MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT
+
+sda      8:0    0  1.8T  0 disk
++-sda1   8:1    0  1.8T  0 part /data01
+sdb      8:0    0  1.8T  0 disk
++-sdb1   8:1    0  1.8T  0 part /data02
+sdc      8:0    0  1.8T  0 disk
++-sdc1   8:1    0  1.8T  0 part /var/lib/cdsw
+sdd      8:0    0  1.8T  0 disk
++-sdd1   8:1    0  1.8T  0 part (not mounted)
+sde      8:16   0  1.1T  0 disk
++-sde1   8:17   0    1G  0 part /boot
++-sde2   8:17   0  1.1T  0 part /
+++-rhel-root 253:0  0  1.1T  0 lvm /
+++-rhel-swap 253:1  0    4G  0 lvm [swap]
+sr0     11:0    1 1024M  0 rom
+
+$ ./setup.sh local templates/cdsw_template.json /dev/sdd
+```
+
 
 AWS, using a M5.2xlarge or M5.4xlarge
 ```
