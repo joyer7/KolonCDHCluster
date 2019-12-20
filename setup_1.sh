@@ -75,3 +75,27 @@ yum clean all
 rm -rf /var/cache/yum/
 yum repolist
 
+
+# Keygen Create
+echo "-- Enable passwordless root login via rsa key"
+ssh-keygen -f ~/myRSAkey -t rsa -N ""
+mkdir ~/.ssh
+cat ~/myRSAkey.pub >> ~/.ssh/authorized_keys
+chmod 400 ~/.ssh/authorized_keys
+ssh-keyscan -H `hostname` >> ~/.ssh/known_hosts
+#sed -i 's/.*PermitRootLogin.*/PermitRootLogin without-password/' /etc/ssh/sshd_config
+systemctl restart sshd
+
+
+# Python Installation
+yum install -y epel-release
+yum install -y python-pip
+pip install --upgrade pip
+pip install cm_client
+
+sed -i "s/YourHostname/`hostname -f`/g" ~/KolonCDHCluster/$TEMPLATE
+sed -i "s/YourCDSWDomain/cdsw.$PUBLIC_IP.nip.io/g" ~/KolonCDHCluster/$TEMPLATE
+sed -i "s/YourPrivateIP/`hostname -I | tr -d '[:space:]'`/g" ~/KolonCDHCluster/$TEMPLATE
+sed -i "s#YourDockerDevice#$DOCKERDEVICE#g" ~/KolonCDHCluster/$TEMPLATE
+
+sed -i "s/YourHostname/`hostname -f`/g" ~/KolonCDHCluster/scripts/create_cluster.py
