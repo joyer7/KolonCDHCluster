@@ -50,7 +50,7 @@ yum install -y python-pip
 pip install --upgrade pip
 
 # Timedate setting
-timedatectl set-timezone asia/seoul
+timedatectl set-timezone Asia/Seoul
 
 
 
