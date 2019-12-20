@@ -136,7 +136,7 @@ sde      8:16   0  1.1T  0 disk
 ++-rhel-swap 253:1  0    4G  0 lvm [swap]
 sr0     11:0    1 1024M  0 rom
 
-$ ./setup.sh local templates/cdsw_template.json /dev/sdd
+$ ./setup.sh legacy templates/cdsw_template.json /dev/sdd
 ```
 
 

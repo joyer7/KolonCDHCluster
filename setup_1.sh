@@ -21,32 +21,8 @@ yum install nodejs -y
 npm install forever -g 
 
 # Check input parameters
-case "$1" in
-        legacy)
-            echo "server 169.254.169.123 prefer iburst minpoll 4 maxpoll 4" >> /etc/chrony.conf
-            systemctl restart chronyd
-            ;;
-		aws)
-            echo "server 169.254.169.123 prefer iburst minpoll 4 maxpoll 4" >> /etc/chrony.conf
-            systemctl restart chronyd
-            ;;
-        azure)
-            umount /mnt/resource
-            mount /dev/sdb1 /opt
-            ;;
-        gcp)
-            ;;
-        *)
-            echo $"Usage: $0 {aws|azure|gcp} template-file [docker-device]"
-            echo $"example: ./setup.sh azure default_template.json"
-            echo $"example: ./setup.sh aws cdsw_template.json /dev/xvdb"
-            exit 1
-esac
-
-TEMPLATE=$2
-# ugly, but for now the docker device has to be put by the user
-DOCKERDEVICE=$3
-
+echo "server 169.254.169.123 prefer iburst minpoll 4 maxpoll 4" >> /etc/chrony.conf
+systemctl restart chronyd
 
 echo "-- Configure networking"
 PUBLIC_IP=`curl https://api.ipify.org/`
@@ -59,23 +35,6 @@ setenforce 0
 sed -i 's/SELINUX=.*/SELINUX=disabled/' /etc/selinux/config
 
 
-echo "-- Install CM and MariaDB repo"
-wget https://archive.cloudera.com/cm6/6.3.0/redhat7/yum/cloudera-manager.repo -P /etc/yum.repos.d/
-
-## MariaDB 10.1
-cat - >/etc/yum.repos.d/MariaDB.repo <<EOF
-[mariadb]
-name = MariaDB
-baseurl = http://yum.mariadb.org/10.1/centos7-amd64
-gpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
-gpgcheck=1
-EOF
-
-yum clean all
-rm -rf /var/cache/yum/
-yum repolist
-
-
 # Keygen Create
 echo "-- Enable passwordless root login via rsa key"
 ssh-keygen -f ~/myRSAkey -t rsa -N ""
@@ -85,7 +44,6 @@ chmod 400 ~/.ssh/authorized_keys
 ssh-keyscan -H `hostname` >> ~/.ssh/known_hosts
 #sed -i 's/.*PermitRootLogin.*/PermitRootLogin without-password/' /etc/ssh/sshd_config
 systemctl restart sshd
-
 
 # Python Installation
 yum install -y epel-release

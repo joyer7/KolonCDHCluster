@@ -1,4 +1,14 @@
 #! /bin/bash
+TEMPLATE=$1
+# ugly, but for now the docker device has to be put by the user
+DOCKERDEVICE=$2
+
+echo "-- Install CM and MariaDB repo"
+wget https://archive.cloudera.com/cm6/6.3.0/redhat7/yum/cloudera-manager.repo -P /etc/yum.repos.d/
+
+yum clean all
+rm -rf /var/cache/yum/
+yum repolist
 
 
 yum install -y cloudera-manager-daemons cloudera-manager-agent cloudera-manager-server
@@ -66,9 +76,6 @@ cp ~/KolonCDHCluster/conf/bootstrap.conf /opt/cloudera/cem/minifi/conf
 sed -i "s/YourHostname/`hostname -f`/g" /opt/cloudera/cem/efm/conf/efm.properties
 sed -i "s/YourHostname/`hostname -f`/g" /opt/cloudera/cem/minifi/conf/bootstrap.conf
 /opt/cloudera/cem/minifi/bin/minifi.sh install
-
-
-
 
 
 echo "-- Start CM, it takes about 2 minutes to be ready"
