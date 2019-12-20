@@ -3,6 +3,8 @@ TEMPLATE=$1
 # ugly, but for now the docker device has to be put by the user
 DOCKERDEVICE=$2
 
+PUBLIC_IP=`curl https://api.ipify.org/`
+
 echo "-- Install CM and MariaDB repo"
 wget https://archive.cloudera.com/cm6/6.3.0/redhat7/yum/cloudera-manager.repo -P /etc/yum.repos.d/
 
