@@ -44,11 +44,6 @@ ssh-keyscan -H `hostname` >> ~/.ssh/known_hosts
 #sed -i 's/.*PermitRootLogin.*/PermitRootLogin without-password/' /etc/ssh/sshd_config
 systemctl restart sshd
 
-# Python Installation
-yum install -y epel-release
-yum install -y python-pip
-pip install --upgrade pip
-
 # Timedate setting
 timedatectl set-timezone Asia/Seoul
 
