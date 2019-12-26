@@ -4,10 +4,12 @@ echo never > /sys/kernel/mm/transparent_hugepage/enabled
 echo never > /sys/kernel/mm/transparent_hugepage/defrag
 echo "echo never > /sys/kernel/mm/transparent_hugepage/enabled" >> /etc/rc.d/rc.local
 echo "echo never > /sys/kernel/mm/transparent_hugepage/defrag" >> /etc/rc.d/rc.local
+
 # add tuned optimization https://www.cloudera.com/documentation/enterprise/6/6.2/topics/cdh_admin_performance.html
 echo  "vm.swappiness = 1" >> /etc/sysctl.conf
 sysctl vm.swappiness=1
 timedatectl set-timezone UTC
+
 # CDSW requires Centos 7.5, so we trick it to believe it is...
 echo "CentOS Linux release 7.6.0 (Core)" > /etc/redhat-release
 
@@ -19,6 +21,7 @@ yum install -y gcc-c++ make
 curl -sL https://rpm.nodesource.com/setup_10.x | sudo -E bash - 
 yum install nodejs -y
 npm install forever -g 
+
 
 # Check input parameters
 echo "server 169.254.169.123 prefer iburst minpoll 4 maxpoll 4" >> /etc/chrony.conf
@@ -44,11 +47,19 @@ ssh-keyscan -H `hostname` >> ~/.ssh/known_hosts
 #sed -i 's/.*PermitRootLogin.*/PermitRootLogin without-password/' /etc/ssh/sshd_config
 systemctl restart sshd
 
+
 # Timedate setting
 timedatectl set-timezone Asia/Seoul
 
+
+# transparent_hugepage
+echo never > /sys/kernel/mm/transparent_hugepage/defrag
+echo never > /sys/kernel/mm/transparent_hugepage/enabled
+
+
+# Set the /etc/hosts file
 echo "---------------------------------------------"
-echo " Set the /etc/hosts file     "
+echo " Set the /etc/hosts file                     "
 echo "---------------------------------------------"
 
 read -p "After restart You should check the hosts file"
