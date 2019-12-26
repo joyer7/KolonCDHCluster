@@ -1,4 +1,7 @@
 #! /bin/bash
+TEMPLATE=$1
+# ugly, but for now the docker device has to be put by the user
+DOCKERDEVICE=$2
 
 # Cloudera Manager Install
 yum install -y epel-release

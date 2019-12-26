@@ -47,5 +47,13 @@ systemctl restart sshd
 # Timedate setting
 timedatectl set-timezone Asia/Seoul
 
+echo "---------------------------------------------"
+echo " Set the /etc/hosts file     "
+echo "---------------------------------------------"
+
+read -p "After restart You should check the hosts file"
+
+# System Reboot
+sudo reboot
 
 
