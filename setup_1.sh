@@ -47,6 +47,26 @@ ssh-keyscan -H `hostname` >> ~/.ssh/known_hosts
 #sed -i 's/.*PermitRootLogin.*/PermitRootLogin without-password/' /etc/ssh/sshd_config
 systemctl restart sshd
 
+# Maria DB
+## MariaDB 10.1
+cat - >/etc/yum.repos.d/MariaDB.repo <<EOF
+[mariadb]
+name = MariaDB
+baseurl = http://yum.mariadb.org/10.1/centos7-amd64
+gpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
+gpgcheck=1
+EOF
+
+yum install -y MariaDB-client
+
+
+echo "-- Install JDBC connector"
+wget https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.46.tar.gz -P ~
+tar zxf ~/mysql-connector-java-5.1.46.tar.gz -C ~
+mkdir -p /usr/share/java/
+cp ~/mysql-connector-java-5.1.46/mysql-connector-java-5.1.46-bin.jar /usr/share/java/mysql-connector-java.jar
+rm -rf ~/mysql-connector-java-5.1.46*
+
 
 # Timedate setting
 timedatectl set-timezone Asia/Seoul
@@ -61,6 +81,7 @@ echo never > /sys/kernel/mm/transparent_hugepage/enabled
 echo "---------------------------------------------"
 echo " Set the /etc/hosts file                     "
 echo "---------------------------------------------"
+
 
 read -p "After restart You should check the hosts file"
 
