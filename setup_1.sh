@@ -85,7 +85,8 @@ echo "---------------------------------------------"
 
 read -p "After restart You should check the hosts file"
 
+echo "Do not Reboot rightnow"
 # System Reboot
-sudo reboot
+# sudo reboot
 
 
