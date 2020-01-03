@@ -30,36 +30,6 @@ else
         exit
 fi
 
-echo -n "Did you set /etc/hosts first?  <y/n > "
-read -i Y  input
-if [[ "$input" == "y" || "$input" == "Y" ]]; then
-        echo "-------------------------"
-        echo "-- OK! Let's Go!"
-        echo "-------------------------"
-else
-        echo "-------------------------"
-        echo "-- Set /etc/hosts first!"
-        echo "-------------------------"
-        exit
-fi
-
-echo "Continue Script !!"
-
-	
-read input "Did you set /etc/hosts? <y/n>"  
-echo "You said <${input}>"
-if [${input} == "y"]; then
-	echo "-------------------------"
-	echo "-- OK! Let's Go!"
-	echo "-------------------------"
-else 
-	echo "-------------------------"
-	echo "-- Set /etc/hosts first!"
-	echo "-------------------------"
-	exit
-fi	
-
-
 # disable THP(Transparent Huge Pages)
 echo ""
 echo ""
