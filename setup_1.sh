@@ -49,6 +49,7 @@ timedatectl set-timezone UTC
 
 # CDSW requires Centos 7.5, so we trick it to believe it is...
 echo "CentOS Linux release 7.6.0 (Core)" > /etc/redhat-release
+cp /etc/redhat-release /etc/centos-release
 echo ""
 echo ""
 echo ""
